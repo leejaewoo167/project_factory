@@ -1,0 +1,10 @@
+{
+    "model": "randomforest",
+    "seed": 600,
+    "export": false,
+    "depth": [0, 5], 
+    "test_split_ratio": 0.2,
+    "n_estimators": [100],
+    "min_samples_split": [5],
+    "min_samples_leaf": [2]
+}
