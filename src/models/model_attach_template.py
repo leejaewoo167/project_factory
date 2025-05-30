@@ -1,13 +1,13 @@
 # step 1: load the required libraries 
 from sklearn.ensemble import RandomForestClassifier
-from utils import logger
+from utils import logger, set_parameters
 
 def modelName(params):
     
     # candidate parameters
     param1 = params['depth']
     param_set = {
-        "param1": [p for p in range(param1[0], param1[1]+1)]
+        "param1": set_parameters(param=param1)
     }
     
     # define model

@@ -43,8 +43,8 @@ def set_parameters(param:list) -> list:
     elif len(param) == 3:
         p_min = param[0]
         p_max = param[1]
-        p_criterion = param[2]
-        return [p for p in np.arange(p_min, p_max+0.00001, p_criterion, dtype=type(p_max))]
+        p_increment = param[2]
+        return [p for p in np.arange(p_min, p_max+0.00001, p_increment, dtype=type(p_max))]
     
     else:
         raise "Invalid length of parameter"
