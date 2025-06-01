@@ -10,9 +10,13 @@ class Trainer:
                  model: dict,
                  dataset: dict,
                  params:dict):
-        
-        self.params = params 
-        self.seed = params['seed']
+        """_summary_
+
+        Args:
+            model (dict): loaded model
+            dataset (dict): loaded dataset
+            params (dict): parameters
+        """
         
         self.train_x = dataset['train_X']
         self.train_y = dataset['train_y']
@@ -27,19 +31,28 @@ class Trainer:
     
     def model_train(self):
         
-        # define strategy of parameter search
+        # parameter tunning을 위한 searching strategy 정의
         pr_search = GridSearchCV(estimator=self.model,
                                  param_grid=self.param_set,
                                  scoring='roc_auc', # metric
                                  cv = 5, # # of cross validation 
                                  n_jobs=5) # # of CPU core
         
-        # define training pipeline
+        # 학습 pipeline 정의
+        """
+        - class의 비율이 불균형하므로 sklearn 기반의 imblearn의 pipelin을 사용하여 smote을 pipeline에 참여
+        - smote: KNN 기반으로 이웃 샘플을 선택하여 소수의 클래스 샘플과 이웃 샘플을 합성하는 방법입니다.
+        - process
+            step 1: 모델 학습을 위해 각 데이터셋의 type에 맞게 전처리
+            step 2: smote를 이용하여 sampling
+            step 3: 학습 및 hyper-parameter search
+        
+        """
         train_pipeline = ImbPipeline(steps = [('processor', self.preprocessor),
-                                              ('smote', SMOTE(random_state = self.seed)),
+                                              ('smote', SMOTE()),
                                               ('classifier', pr_search)])
         
-        # fitting with train feature and train targets
+        # model fitting
         train_pipeline.fit(self.train_x, 
                            self.train_y)
         

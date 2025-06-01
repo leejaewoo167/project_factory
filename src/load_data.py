@@ -4,30 +4,8 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
-from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.impute import SimpleImputer
-from utils import logger
-
-class IQRClipper(BaseEstimator, TransformerMixin):
-    def __init__(self):
-        self.bounds = {}
-
-    def fit(self, X, y=None):
-        self.bounds = []
-        for i in range(X.shape[1]):
-            q1 = np.percentile(X[:, i], 25)
-            q3 = np.percentile(X[:, i], 75)
-            iqr = q3 - q1
-            lower = q1 - 1.5 * iqr
-            upper = q3 + 1.5 * iqr
-            self.bounds.append((lower, upper))
-        return self
-
-    def transform(self, X):
-        X_clipped = X.copy()
-        for i, (lower, upper) in enumerate(self.bounds):
-            X_clipped[:, i] = np.clip(X[:, i], lower, upper)
-        return X_clipped
+from utils import IQRClipper
 
 class LoadDataset:
     def __init__(self,
@@ -74,7 +52,10 @@ class LoadDataset:
                                                                 stratify=y, 
                                                                 test_size=self.spilt_ratio)
             
-            # pipeline of numerical data 
+            # pipeline of numerical data
+            # step 1. 결측치를 median으로 impute
+            # step 2. 이상치를 IQR 기준으로 clipping
+            # step 3. 표준화
             numeric_transformer = Pipeline(steps=[
                 ('imputer', SimpleImputer(strategy='median')),
                 ('clipper', IQRClipper()),
@@ -82,12 +63,15 @@ class LoadDataset:
             ])
 
             # pipeline of categorical data
+            # step 1: 결측치를 최빈값으로 impute
+            # step 2: 모델 학습을 위한 One-hot encoding
             categorical_transformer = Pipeline(steps=[
                 ('imputer', SimpleImputer(strategy='most_frequent')),
                 ('encoder', OneHotEncoder(handle_unknown='ignore'))
             ])
             
             # Overall pipeline
+            # 위의 두 pipeline을 concatenate
             preprocessor = ColumnTransformer(transformers=[
                 ('num', numeric_transformer, numeric_cols),
                 ('cat', categorical_transformer, categorical_cols)

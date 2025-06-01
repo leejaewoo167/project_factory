@@ -2,7 +2,7 @@
 
 ### Introduction
 
-ML(Machine Learning)의 workflow는 크게 load data - preprocessing - training - validation - test로 이루어집니다. 이 workflow는 이미 획일화된 과정으로 일괄적으로 처리를 해야합니다. 이에 대한 이유는 다음과 같습니다. 
+ML(Machine Learning)의 workflow는 크게 load data - preprocessing - model training - model validation - model test로 이루어집니다. 이 workflow는 이미 획일화된 과정으로 일괄적으로 처리를 해야합니다. 이에 대한 이유는 다음과 같습니다. 
 
 1. model selection에 대해 pairwise하게 진행하여 제안 모델의 우수성을 파악
 2. 귀찮음 방지
@@ -27,9 +27,27 @@ ML(Machine Learning)의 workflow는 크게 load data - preprocessing - training 
 - OS는 windows, terminal은 bash로 합니다. 
 - terminal의 directory 경로는 이 directory의 최상단에 위치해야 합니다.
 
+0. Required Libraries
+
+```shell
+fire==0.7.0
+loguru==0.7.2
+scipy==1.15.3
+pandas==2.2.3
+numpy==2.2.5
+scikit-learn==1.6.1 
+imbalanced-learn==0.13.0
+lightgbm==4.6.0
+xgboost==2.1.4
+```
+
+- fire는 conda에서 지원을 안해주기 때문에 pip으로 설치해야 합니다
+
 1. 가상환경 세팅
 
 - conda 가상환경을 proj_factory 이름으로 requirements.txt의 라이브러리 버전으로 설치하되 중간에 y/[n] 부분은 모두 yes로 처리하도록 합니다.
+- Mac에서는 안될 가능성이 높습니다. Mac에서 하려면 따로 가상환경을 만드셔서 진행하시길 바랍니다.
+- 아래와 안된다면 0번에서 소개한 library들을 수동으로 설치하시길 바랍니다.
 
 ```shell
 conda create --name proj_factory --file requirements.txt -y
@@ -135,10 +153,7 @@ config file 기준
 ```shell
 ├── config
 │   ├── bagging.json
-│   ├── lightgbm.json
-│   ├── randomforest.json
-│   ├── voting.json
-│   └── xgboost.json
+│   ├── ...
 ├── data
 │   ├── submit.csv
 │   ├── test.csv
@@ -152,7 +167,6 @@ config file 기준
     │   ├── Find_thresholds.py
     │   ├── Scaling_dist.py
     │   ├── main.py
-    │   ├── test.py
     │   └── utils.py
     ├── load_data.py
     ├── main.py
@@ -178,6 +192,12 @@ config file 기준
   - models: model을 작성한 파일들을 보관합니다.
 
 ---
+
+### Recommended References
+
+- [pbd(python debugger)](https://jh-bk.tistory.com/22)
+
+- 
 
 
 

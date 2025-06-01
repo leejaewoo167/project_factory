@@ -1,22 +1,17 @@
 from xgboost import XGBClassifier
-from lightgbm import LGBMClassifier
 from sklearn.model_selection import GridSearchCV
-from sklearn.ensemble import RandomForestClassifier, VotingClassifier, BaggingClassifier
 
-from utils import logger
+from utils import logger, set_parameters
 
 def Xgboost(params):
     
-    param_set = {}
-    classifier = VotingClassifier(
-        estimators=[
-            ('randomforest', RandomForestClassifier()),
-            ('xgboost', XGBClassifier(use_label_encoder=False, eval_metric='logloss')),
-            ('bagged_lgbm', bagged_lgbm)],
-        voting='soft'
-        )
+    param_set = {"max_depth" : set_parameters(params['max_depth']),
+                 "n_estimators": set_parameters(params['n_estimators']), 
+                 "learning_rate": set_parameters(params['learning_rate']),
+                 "subsample": set_parameters(params['subsample'])}
+    classifier = XGBClassifier()
     
-    logger.info(f'load Voting model')
+    logger.info(f'load xgboost model')
     return {"parameters": param_set,
             "estimator": classifier}
 # GridSearchCV(estimator=classifier, 

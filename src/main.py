@@ -10,7 +10,6 @@ warnings.filterwarnings('ignore')
 def main(params: dict):
     
     # step 0: initialization
-    # setting the global seed number
     # it can fix the seed number globally
     set_random_seed(seed=params['seed'])
     log_param(params)
