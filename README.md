@@ -41,7 +41,7 @@ lightgbm==4.6.0
 xgboost==2.1.4
 ```
 
-- fire는 conda에서 지원을 안해주기 때문에 pip으로 설치해야 합니다
+- fire는 conda에서 지원을 안해주기 때문에 pip으로 설치하셔야 합니다
 
 1. 가상환경 세팅
 
