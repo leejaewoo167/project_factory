@@ -197,8 +197,6 @@ config file 기준
 
 - [pbd(python debugger)](https://jh-bk.tistory.com/22)
 
-- 
-
 
 
 '이게 뭐지?' 하는 부분이 있으면 주저없이 저에게 연락부탁드립니다.
